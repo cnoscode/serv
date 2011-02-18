@@ -27,3 +27,4 @@ fqeq.close
         puts system("./gfClient localhost 9501 . /home/cjose/blat/fq8_out.fa /home/cjose/blat/output1.psl")
         puts system("./gfClient localhost 9502 . /home/cjose/blat/ee_query.fa /home/cjose/blat/output2.psl")
    end
+         test1
