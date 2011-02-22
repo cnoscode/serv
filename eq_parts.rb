@@ -1,17 +1,18 @@
+require 'rubygems'
 require 'bio'
 
-fq = Bio::FlatFile.open('ERR000001.fastq')
+fq = Bio::FlatFile.open('test1.fastq')
 
 file_ctr = 0
-fqeq = File.new("/home/cjose/blat/fq#{file_ctr}_out.fa", 'w')
+fqeq = File.new("/Users/cjose/blat/fq#{file_ctr}_out.fa", 'w')
 ent_ctr = 0
 
 fq.each do |entry|
     ent_ctr += 1
-    if ent_ctr > 100000
+    if ent_ctr > 1000
         file_ctr += 1
         fqeq.close
-        fqeq = File.new("/home/cjose/blat/fq#{file_ctr}_out.fa", 'w')
+        fqeq = File.new("/Users/cjose/blat/fq#{file_ctr}_out.fa", 'w')
         ent_ctr = 0    
     end
     d = "#{entry.definition}"
@@ -20,25 +21,26 @@ fq.each do |entry|
 end
 fqeq.close
 
-#test
-puts "Pinging host..."
-pinging = system "ping -c 10 localhost"
+################################# TEST ########################################
 
-	while pinging
-		system "./gfServer start localhost 9051 zfchr1.nib &> /dev/null &" 
-		puts "server started"
-		sleep(5)
-		puts system "./gfClient localhost 9051 . /Users/cjose/blat/test_q.fa out.psl"
-		break
-	end
 
-=begin
-   def test1
-        system("./gfServer start localhost 9501 zfchr1.nib &> /dev/null &")
-        system("./gfServer start localhost 9502 zfchr1.nib &> /dev/null &")
+# /dev/null contains server output
 
-        puts system("./gfClient localhost 9501 . /home/cjose/blat/fq8_out.fa /home/cjose/blat/output1.psl")
-        puts system("./gfClient localhost 9502 . /home/cjose/blat/ee_query.fa /home/cjose/blat/output2.psl")
-   end
-         test1
-=end
+system "./gfServer start localhost 9500 chr1.nib &> /dev/null &"
+puts "Starting BLAT..."
+
+
+while true
+	sleep(3)	
+	puts "Starting client..."
+	result = system "./gfClient localhost 9500 . /Users/cjose/blat/test_q.fa /Users/cjose/blat/test.psl"
+	break if result	
+end
+
+psl_ctr = 0
+0.upto file_ctr do |file_index|
+	psl_ctr += 1 
+	output = system "./gfClient localhost 9500 . /Users/cjose/blat/fq#{file_ctr}_out.fa /Users/cjose/blat/out#{psl_ctr}.psl"
+	break if !output
+end
+	
