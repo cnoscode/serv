@@ -26,21 +26,22 @@ fqeq.close
 
 # /dev/null contains server output
 
+puts Time.now
 system "./gfServer start localhost 9500 chr1.nib &> /dev/null &"
 puts "Starting BLAT..."
-
 
 while true
 	sleep(3)	
 	puts "Starting client..."
-	result = system "./gfClient localhost 9500 . /Users/cjose/blat/test_q.fa /Users/cjose/blat/test.psl"
+	result = system "./gfClient localhost 9500 . /Users/cjose/blat/test_q.fa /Users/cjose/blat/test.psl "
 	break if result	
 end
 
-psl_ctr = 0
 0.upto file_ctr do |file_index|
-	psl_ctr += 1 
-	output = system "./gfClient localhost 9500 . /Users/cjose/blat/fq#{file_ctr}_out.fa /Users/cjose/blat/out#{psl_ctr}.psl"
+	output = system "./gfClient localhost 9500 . /Users/cjose/blat/fq#{file_index}_out.fa /Users/cjose/blat/out#{file_index}.psl &"
 	break if !output
 end
+
+#timeCheck = File.new("/Users/cjose/blat/timeCheck.txt", 'w')
+#timeCheck.puts Time.now
 	
