@@ -37,11 +37,15 @@ while true
 	break if result	
 end
 
+
 0.upto file_ctr do |file_index|
 	output = system "./gfClient localhost 9500 . /Users/cjose/blat/fq#{file_index}_out.fa /Users/cjose/blat/out#{file_index}.psl &"
-	break if !output
-end
-
-#timeCheck = File.new("/Users/cjose/blat/timeCheck.txt", 'w')
-#timeCheck.puts Time.now
+		#if output then 
+	
+		while !output == true 
+		timeCheck = File.new("/Users/cjose/blat/timeCheck.txt", 'w')
+		timeCheck.puts Time.new
+		end	
+		break if !output
+	end
 	
